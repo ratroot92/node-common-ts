@@ -6,13 +6,15 @@ class MalikLogger {
     constructor() {}
 
     static inspectObject(obj) {
+        console.log('==============================')
         console.log(util.inspect(obj, false, null, true /* enable colors */))
+        console.log('==============================')
     }
 
     static logObject(k, obj, ind) {
         console.log('\n')
         try {
-            console.log(`\x1b[32m[${ind}][${k}] =>[${Object.keys(obj)}]\x1b[3m`)
+            console.log(`[${ind}][${k}] =>[${Object.keys(obj)}]\x1b[3m`)
             Object.keys(obj).forEach((key, index) => {
                 if (obj[key].constructor.name === 'String' || obj[key].constructor.name === 'Number') {
                     console.log(`\t \x1b[34m=>[${index}] => key [${key}] value [${obj[key]}]\x1b[34m`)
@@ -38,7 +40,7 @@ class MalikLogger {
                 } else if (el.constructor.name === 'Array' && el.length > 0) {
                     MalikLogger.logArray(key, el, index + ind)
                 } else {
-                    console.log(`\x1b[33m[index ${index}] =>  [${el}]\x1b[33m`)
+                    console.log(`[index ${index}] =>  [${el}]`)
                 }
             })
         } catch (err) {
