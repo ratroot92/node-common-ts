@@ -1,48 +1,51 @@
+/* eslint-disable no-console */
+/* eslint-disable no-constructor-return */
+const util = require('util')
+
 class MalikLogger {
-  constructor() {
-    if (MalikLogger.instance instanceof MalikLogger) {
-      return MalikLogger.instance;
-    } else {
-      //   this.settingsObject = {
-      //     background: "#000",
-      //     version: Math.floor(Math.random() * 4000),
-      //   };
-      //   Object.freeze(this.settingsObject);
-      Object.freeze(this);
-      MalikLogger.instance = this;
-    }
-  }
+    constructor() {}
 
-  //   get(key) {
-  //     return this.settingsObject[key];
-  //   }
-  logObjectKeysAndValues(obj) {
-    try {
-      if (Object.keys(obj).length > 0) {
-        Object.keys(obj).forEach((key, index) => {
-          if (typeof obj[key] === "string") {
-            console.log(`key [${key}] has value [${obj[key]}] `);
-          } else if (typeof obj[key] === "object") {
-            CommonMiddleware.logObjectKeys(obj.keys);
-          }
-        });
-      }
-    } catch (err) {
-      console.log(err.message);
+    static inspectObject(obj) {
+        console.log(util.inspect(obj, false, null, true /* enable colors */))
     }
-  }
-  logArray(arr) {
-    try {
-      if (typeof arr === "array") {
-        console.table(arr);
-      } else {
-        throw new Error("invalid array.");
-      }
-    } catch (err) {
-      throw new Error("invalid array.");
+
+    static logObject(k, obj, ind) {
+        console.log('\n')
+        try {
+            console.log(`\x1b[32m[${ind}][${k}] =>[${Object.keys(obj)}]\x1b[3m`)
+            Object.keys(obj).forEach((key, index) => {
+                if (obj[key].constructor.name === 'String' || obj[key].constructor.name === 'Number') {
+                    console.log(`\t \x1b[34m=>[${index}] => key [${key}] value [${obj[key]}]\x1b[34m`)
+                } else if (obj[key].constructor.name === 'Object' && Object.keys(obj[key]).length > 0) {
+                    MalikLogger.logObject(key, obj[key], index)
+                } else if (obj[key].constructor.name === 'Array') {
+                    console.log(`[${index}][${key}] is  [Array] `)
+                } else {
+                    console.log(`\t \x1b[34m=>[${index}] => key [${key}] value [${obj[key]}]\x1b[34m`)
+                }
+            })
+        } catch (err) {
+            console.log(err.message)
+        }
     }
-  }
+
+    static logArray(key, arr, ind) {
+        console.log('\n')
+        try {
+            arr.forEach((el, index) => {
+                if (el.constructor.name === 'Object' && Object.keys(el).length > 0) {
+                    MalikLogger.logObject(key, el, index + ind)
+                } else if (el.constructor.name === 'Array' && el.length > 0) {
+                    MalikLogger.logArray(key, el, index + ind)
+                } else {
+                    console.log(`\x1b[33m[index ${index}] =>  [${el}]\x1b[33m`)
+                }
+            })
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
 }
-const malikLogger = new MalikLogger();
+const malikLogger = new MalikLogger()
 
-export { malikLogger, MalikLogger };
+module.exports = { malikLogger, MalikLogger }

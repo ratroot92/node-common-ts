@@ -1,3 +1,4 @@
-import { MalikLogger, malikLogger } from "./logger";
-import { commonMiddleware, CommonMiddleware } from "./middleware";
-export { MalikLogger, malikLogger };
+const { MalikLogger, malikLogger } = require('./logger')
+const { commonMiddleware, CommonMiddleware } = require('./middleware')
+
+module.exports = { MalikLogger, malikLogger, commonMiddleware, CommonMiddleware }

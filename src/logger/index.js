@@ -1,2 +1,3 @@
-import { malikLogger, MalikLogger } from "./MalikLogger";
-export { malikLogger, MalikLogger };
+const { malikLogger, MalikLogger } = require('./MalikLogger')
+
+module.exports = { malikLogger, MalikLogger }
