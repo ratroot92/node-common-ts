@@ -38,9 +38,7 @@ class CommonMiddleware extends MalikLogger {
                                     return next()
                                 }
                             } else {
-                                throw new Error(
-                                    `param '${key}' has a type '${body[key].constructor.name}' expected '${type}' `
-                                )
+                                throw new Error(`param '${key}' has a type '${body[key].constructor.name}' expected '${type}' `)
                             }
                         } else {
                             throw new Error('invalid constructor type')
@@ -56,26 +54,22 @@ class CommonMiddleware extends MalikLogger {
         }
     }
 
-    ensureBodyHasMany(arrKeys = []) {
+    ensureBodyHasMany(bodyParamsList = []) {
         return (req, res, next) => {
             try {
                 const { body } = req
-                if (arrKeys.constructor.name === 'Array') {
-                    if (arrKeys.length > 0) {
+                if (bodyParamsList.constructor.name === 'Array') {
+                    if (bodyParamsList.length > 0) {
                         if (Object.keys(body).length) {
                             const bodyParamsList = Object.keys(body)
-                            const missing = arrKeys.reduce((missingParams, el) => {
+                            const missing = bodyParamsList.reduce((missingParams, el) => {
                                 if (bodyParamsList.includes(el) === false) {
                                     missingParams.push(el)
                                 }
                                 return missingParams
                             }, [])
                             if (missing.length === 0) return next()
-                            throw new Error(
-                                `incomplete request body ${missing.length > 1 ? 'params' : 'param'} [${[
-                                    ...missing,
-                                ]}] are required`
-                            )
+                            throw new Error(`incomplete request body ${missing.length > 1 ? 'params' : 'param'} [${[...missing]}] are required`)
                         }
                     } else {
                         throw new Error('params array is empty')
@@ -97,11 +91,9 @@ class CommonMiddleware extends MalikLogger {
             }).uploadSingle()
             return upload(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
-                    console.log(err.message)
                     return next(err.message)
                 }
                 if (err) {
-                    console.log(err.message)
                     return next(err.message)
                 }
                 req.body[mediaKey] = req.file
@@ -126,6 +118,48 @@ class CommonMiddleware extends MalikLogger {
         }
 
         return next()
+    }
+    ensurePathVar(pathVar = 'id', type) {
+        return async (req, res, next) => {
+            try {
+                if (req.params.id.split('').includes(':')) {
+                    throw new Error(`path variable '${pathVar}' is required`)
+                } else {
+                    const re = /^[0-9a-fA-F]{24}$/
+                    if (re.test(req.params[pathVar]) === false) throw new Error(`path variable '${pathVar}' is not a valid ObjectId`)
+                    else {
+                        return next()
+                    }
+                }
+            } catch (err) {
+                return next(ApiError.badRequest(err.message))
+            }
+        }
+    }
+    ensureQueryParams(queryParamsList = []) {
+        return async (req, res, next) => {
+            try {
+                if (Object.keys(req.query).length === 0) {
+                    throw new Error(`query params are required`)
+                } else {
+                    if (queryParamsList.constructor.name === 'Array' && queryParamsList.length > 0) {
+                        const querParamsList = Object.keys(req.query)
+                        const missing = queryParamsList.reduce((missingParams, el) => {
+                            if (querParamsList.includes(el) === false) {
+                                missingParams.push(el)
+                            }
+                            return missingParams
+                        }, [])
+                        if (missing.length === 0) return next()
+                        throw new Error(`incomplete request body ${missing.length > 1 ? 'params' : 'param'} [${[...missing]}] are required`)
+                    } else {
+                        throw new Error(`path variable '${queryParamsList}' is required`)
+                    }
+                }
+            } catch (err) {
+                return next(ApiError.badRequest(err.message))
+            }
+        }
     }
 }
 
