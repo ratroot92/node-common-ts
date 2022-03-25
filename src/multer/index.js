@@ -24,6 +24,14 @@ class MulterUtils {
         }
     }
 
+    fileFilter = (req, file, cb) => {
+        if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+            cb(null, true)
+        } else {
+            cb(null, false)
+        }
+    }
+
     uploadSingle() {
         try {
             const storage = multer.diskStorage({

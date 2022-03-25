@@ -12,12 +12,52 @@ class CommonMiddleware extends MalikLogger {
         super()
     }
 
-    inspectRequestBody(req, res, next) {
-        MalikLogger.inspectObject(req.body)
-        return next()
+    ensureAndInspectReq(reqKey = 'body') {
+        return (req, res, next) => {
+            if (Object.keys(req[reqKey]).length > 0) {
+                MalikLogger.inspectObject(req[reqKey])
+                return next()
+            } else {
+                return next(ApiError.badRequest(`request ${reqKey} is required`))
+            }
+        }
     }
 
-    ensureBodyHas(key, type = '') {
+    ensureBodyHasOptional(optionalBodyParamList = [], type) {
+        return (req, res, next) => {
+            try {
+                const { body } = req
+                if (optionalBodyParamList.constructor.name === 'Array') {
+                    if (optionalBodyParamList.length > 0) {
+                        optionalBodyParamList.forEach((el) => {
+                            if (Object.keys(body).includes(el)) {
+                                if (type) {
+                                    if (body[el].constructor.name !== type) {
+                                        throw new Error(
+                                            `param '${key}' has a type '${body[key].constructor.name}' expected '${type}' `
+                                        )
+                                    } else {
+                                        return next()
+                                    }
+                                } else {
+                                    return next()
+                                }
+                            }
+                        })
+                    } else {
+                        throw new Error('params are required')
+                    }
+                } else {
+                    throw new Error('invalid params array')
+                }
+            } catch (err) {
+                console.log('err ==>', err.stack)
+                return next(ApiError.badRequest(err.message))
+            }
+        }
+    }
+
+    ensureBodyHas(key, type) {
         return (req, res, next) => {
             try {
                 const { body } = req
@@ -38,7 +78,9 @@ class CommonMiddleware extends MalikLogger {
                                     return next()
                                 }
                             } else {
-                                throw new Error(`param '${key}' has a type '${body[key].constructor.name}' expected '${type}' `)
+                                throw new Error(
+                                    `param '${key}' has a type '${body[key].constructor.name}' expected '${type}' `
+                                )
                             }
                         } else {
                             throw new Error('invalid constructor type')
@@ -49,6 +91,7 @@ class CommonMiddleware extends MalikLogger {
                 }
                 throw new Error(`param '${key}' is required`)
             } catch (err) {
+                console.log('err ==>', err.stack)
                 return next(ApiError.badRequest(err.message))
             }
         }
@@ -69,16 +112,41 @@ class CommonMiddleware extends MalikLogger {
                                 return missingParams
                             }, [])
                             if (missing.length === 0) return next()
-                            throw new Error(`incomplete request body ${missing.length > 1 ? 'params' : 'param'} [${[...missing]}] are required`)
+                            throw new Error(
+                                `incomplete request body ${missing.length > 1 ? 'params' : 'param'} [${[
+                                    ...missing,
+                                ]}] are required`
+                            )
                         }
                     } else {
+                        console.log('inside')
                         throw new Error('params array is empty')
                     }
                 }
                 throw new Error('invalid params array')
             } catch (err) {
+                console.log('err ==>', err.stack)
                 return next(ApiError.badRequest(err.message))
             }
+        }
+    }
+
+    attachAnyFormData(req, res, next) {
+        try {
+            const upload = multer().any()
+            return upload(req, res, function (err) {
+                if (err instanceof multer.MulterError) {
+                    throw new Error(err.message)
+                } else if (err) {
+                    throw new Error(err.message)
+                } else {
+                    if (req.files) return next()
+                    else new Error('req.files is undefined')
+                }
+            })
+        } catch (err) {
+            console.log('err ==>', err.stack)
+            return next(ApiError.badRequest(err.message))
         }
     }
 
@@ -91,10 +159,10 @@ class CommonMiddleware extends MalikLogger {
             }).uploadSingle()
             return upload(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
-                    return next(err.message)
+                    throw new Error(err.message)
                 }
                 if (err) {
-                    return next(err.message)
+                    throw new Error(err.message)
                 }
                 req.body[mediaKey] = req.file
                 return next()
@@ -102,42 +170,27 @@ class CommonMiddleware extends MalikLogger {
         }
     }
 
-    logRequestBody(req, next) {
-        const { body } = req
-        if (Object.keys(body).length > 0) {
-            Object.keys(body).forEach((key, index) => {
-                if (body[key].constructor.name === 'String') {
-                } else if (body[key].constructor.name === 'Object' && Object.keys(body[key]).length > 0) {
-                    MalikLogger.logObject(key, body[key], index)
-                } else if (body[key].constructor.name === 'Array') {
-                    MalikLogger.logArray(key, body[key], index)
-                }
-            })
-
-            return next()
-        }
-
-        return next()
-    }
-    ensurePathVar(pathVar = 'id', type) {
-        return async (req, res, next) => {
+    ensurePathVarIsObjectId(pathVar = 'id') {
+        return (req, res, next) => {
             try {
                 if (req.params.id.split('').includes(':')) {
                     throw new Error(`path variable '${pathVar}' is required`)
                 } else {
                     const re = /^[0-9a-fA-F]{24}$/
-                    if (re.test(req.params[pathVar]) === false) throw new Error(`path variable '${pathVar}' is not a valid ObjectId`)
-                    else {
+                    if (re.test(req.params[pathVar]) === false) {
+                        throw new Error(`path variable '${pathVar}' is not a valid ObjectId`)
+                    } else {
                         return next()
                     }
                 }
             } catch (err) {
+                console.log('err ==>', err.stack)
                 return next(ApiError.badRequest(err.message))
             }
         }
     }
-    ensureQueryParams(queryParamsList = []) {
-        return async (req, res, next) => {
+    ensureQueryHasParam(queryParamsList = []) {
+        return (req, res, next) => {
             try {
                 if (Object.keys(req.query).length === 0) {
                     throw new Error(`query params are required`)
@@ -151,12 +204,17 @@ class CommonMiddleware extends MalikLogger {
                             return missingParams
                         }, [])
                         if (missing.length === 0) return next()
-                        throw new Error(`incomplete request body ${missing.length > 1 ? 'params' : 'param'} [${[...missing]}] are required`)
+                        throw new Error(
+                            `incomplete request body ${missing.length > 1 ? 'params' : 'param'} [${[
+                                ...missing,
+                            ]}] are required`
+                        )
                     } else {
                         throw new Error(`path variable '${queryParamsList}' is required`)
                     }
                 }
             } catch (err) {
+                console.log('err ==>', err.stack)
                 return next(ApiError.badRequest(err.message))
             }
         }

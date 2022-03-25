@@ -1,3 +1,4 @@
+const { path } = require('path')
 const fs = require('fs')
 const util = require('util')
 
@@ -5,6 +6,7 @@ const promisified = {
     existsAsync: util.promisify(fs.exists),
     mkdirAsync: util.promisify(fs.mkdir),
     unlinkAsync: util.promisify(fs.unlink),
+    writeAsync: util.promisify(fs.writeFile),
 }
 
 class FileSystemUtils {
@@ -35,6 +37,19 @@ class FileSystemUtils {
             }
 
             return false
+        } catch (err) {
+            throw new Error(err.message)
+        }
+    }
+
+    static async createFile(buffer, fileName, filePath) {
+        try {
+            if (!filePath) throw new Error('filePath is required.')
+            if (!buffer) throw new Error('fileBuffer is required.')
+            if (!fileName) throw new Error('fileName is required.')
+            await FileSystemUtils.createPathIfNotExist(filePath)
+            await promisified.writeAsync(`${filePath}/${fileName}`, buffer)
+            return `${filePath}/${fileName}`
         } catch (err) {
             throw new Error(err.message)
         }
