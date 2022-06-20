@@ -6,7 +6,7 @@ const { FileSystemUtils } = require("../fileSystemUtils");
 const { MalikLogger } = require("../logger");
 const { MulterUtils } = require("../multer");
 
-class requestWare extends MalikLogger {
+class requestMiddlewareWare extends MalikLogger {
   static constructorTypes = ["String", "Number", "Array", "Object"];
   constructor() {
     super();
@@ -65,7 +65,7 @@ class requestWare extends MalikLogger {
               return next();
             }
           } else {
-            if (requestWare.constructorTypes.includes(type)) {
+            if (requestMiddlewareWare.constructorTypes.includes(type)) {
               if (body[key].constructor.name === type) {
                 if (body[key].constructor.name === "String") {
                   req.body[key] = body[key].trim();
@@ -202,6 +202,6 @@ class requestWare extends MalikLogger {
   }
 }
 
-const requestWare = new requestWare();
+const requestMiddlewareWare = new requestMiddlewareWare();
 
-module.exports = { requestWare, requestWare };
+module.exports = { requestMiddlewareWare, requestMiddlewareWare };
