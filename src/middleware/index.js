@@ -6,7 +6,7 @@ const { FileSystemUtils } = require("../fileSystemUtils");
 const { MalikLogger } = require("../logger");
 const { MulterUtils } = require("../multer");
 
-class requestMiddlewareWare extends MalikLogger {
+class RequestMiddlewareWare extends MalikLogger {
   static constructorTypes = ["String", "Number", "Array", "Object"];
   constructor() {
     super();
@@ -202,6 +202,6 @@ class requestMiddlewareWare extends MalikLogger {
   }
 }
 
-const requestMiddlewareWare = new requestMiddlewareWare();
+const requestMiddlewareWare = new RequestMiddlewareWare();
 
-module.exports = { requestMiddlewareWare, requestMiddlewareWare };
+module.exports = { requestMiddlewareWare, RequestMiddlewareWare };
