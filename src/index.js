@@ -2,7 +2,7 @@ const { MalikLogger, malikLogger } = require("./logger");
 const { requestMiddlewareWare, RequestMiddlewareWare } = require("./middleware");
 const { FileSystemUtils } = require("./fileSystemUtils");
 const { ApiError, ApiErrorMiddleware, catchAsyncErrors } = require("./error");
-
+const { applySchemaValidation } = require("./validation");
 module.exports = {
   MalikLogger,
   malikLogger,
@@ -12,4 +12,5 @@ module.exports = {
   ApiError,
   ApiErrorMiddleware,
   catchAsyncErrors,
+  applySchemaValidation,
 };
