@@ -10,6 +10,7 @@ function ApiErrorMiddleware(err, req, res, next) {
   if (process.env.NODE_ENV === "development") {
     // MalikLogger.inspectObject(err);
     console.log(err.stack);
+    console.log(err.message);
   }
   if (err instanceof ApiError) {
     res.status(err.code).json({

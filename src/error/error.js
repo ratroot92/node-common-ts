@@ -11,6 +11,9 @@ class ApiError {
   static intervalServerError(msg) {
     return new ApiError(500, msg);
   }
+  static unAuthorized(msg) {
+    return new ApiError(401, msg);
+  }
 
   static notFoundError(msg) {
     return new ApiError(404, msg);
