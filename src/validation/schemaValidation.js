@@ -1,3 +1,5 @@
+const catchAsyncErrors = require("../error/catchAsyncErrors");
+
 module.exports = (path) =>
   catchAsyncErrors(async (req, res, next) => {
     try {
