@@ -1,7 +1,7 @@
 const { MalikLogger, malikLogger } = require("./logger");
 const { commonMiddleware, CommonMiddleware } = require("./middleware");
 const { FileSystemUtils } = require("./fileSystemUtils");
-const { ApiError, ApiErrorMiddleware } = require("./error");
+const { ApiError, ApiErrorMiddleware, catchAsyncErrors } = require("./error");
 
 module.exports = {
   MalikLogger,
@@ -11,4 +11,5 @@ module.exports = {
   FileSystemUtils,
   ApiError,
   ApiErrorMiddleware,
+  catchAsyncErrors,
 };
