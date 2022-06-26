@@ -1,5 +1,3 @@
-auth_microservice/node_modules
-category_microservice/node_modules
-node-common/node_modules
-
+node_modules
+/node_modules
 

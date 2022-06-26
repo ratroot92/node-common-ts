@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-useless-constructor */
 const multer = require("multer");
-const ApiError = require("../error/error");
+const { ApiError } = require("../error");
 const { FileSystemUtils } = require("../fileSystemUtils");
 const { MalikLogger } = require("../logger");
 const { MulterUtils } = require("../multer");

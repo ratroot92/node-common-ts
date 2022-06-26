@@ -1,4 +1,36 @@
 const path = require("path");
+const { ApiError } = require("../error");
+
+const customValidate = async (schema, data) => {
+  const asyncRules = [];
+  const { value, error } = schema.validate(data, { context: { asyncRules } });
+  const asyncErrors = [];
+  const all = await Promise.all(
+    asyncRules.map(async (rule) => {
+      try {
+        await rule();
+        return rule;
+      } catch (error) {
+        let parsedStr = error.message.replace(/"/gi, "");
+        asyncErrors.push(parsedStr);
+        return error;
+      }
+    })
+  );
+  return { value, error, asyncErrors };
+};
+
+function unescapeSlashes(str) {
+  let parsedStr = str.replace(/(^|[^\\])(\\\\)*\\$/, "$&\\");
+  parsedStr = parsedStr.replace(/(^|[^\\])((\\\\)*")/g, "$1\\$2");
+  try {
+    parsedStr = JSON.parse(`"${parsedStr}"`);
+    parsedStr = parsedStr.replace(/"/gi, "");
+  } catch (e) {
+    return str;
+  }
+  return parsedStr;
+}
 
 module.exports = (validationsDir) => async (req, res, next) => {
   try {
@@ -8,20 +40,26 @@ module.exports = (validationsDir) => async (req, res, next) => {
     const validationPath = require(absPath);
     if (typeof validationPath[_method] === "object") {
       if (typeof validationPath[_method][_url] === "object") {
-        try {
-          const { value, error } = await validationPath[_method][_url].validateAsync(req.body);
-          return next();
-        } catch (err) {
+        const schema = validationPath[_method][_url];
+        const data = req.body;
+        const { value, error, asyncErrors } = await customValidate(schema, data);
+        if (asyncErrors.length > 0) {
+          return res.status(422).send({ errors: asyncErrors, success: false });
+        } else if (error !== undefined) {
           const validations = [];
-          err.details.forEach(({ path, message, context }) => {
+          error.details.forEach(({ path, message, context }) => {
             const { name, regex, value, label, key } = context;
             [path] = path;
             validations.push({
               key: path,
-              message: message,
+              message: unescapeSlashes(message),
             });
           });
-          return res.status(422).send({ errors: validations });
+          const payload = { errors: validations, success: false };
+
+          return res.status(422).json(payload);
+        } else {
+          return next();
         }
       } else {
         return next();
@@ -30,6 +68,6 @@ module.exports = (validationsDir) => async (req, res, next) => {
       return next();
     }
   } catch (err) {
-    throw new Error(err.message);
+    return next(ApiError.intervalServerError(err.message));
   }
 };

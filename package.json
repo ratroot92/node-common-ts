@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/ratroot92/node-common#readme",
   "dependencies": {
+    "mongoose": "^6.4.0",
     "multer": "^1.4.4"
   }
 }
