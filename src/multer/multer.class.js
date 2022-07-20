@@ -1,6 +1,6 @@
-const multer = require("multer");
-const path = require("path");
-const { FileSystemUtils } = require("../fileSystemUtils");
+const multer = require('multer');
+const path = require('path');
+const { fileUtils } = require('../fileUtils');
 
 class MulterUtils {
   destination;
@@ -9,7 +9,7 @@ class MulterUtils {
   constructor(options = {}) {
     this.destination = options.destination;
     this.fileSize = options.fileSize ? options.fileSize : 3000000;
-    this.mediaKey = options.mediaKey ? options.mediaKey : "media";
+    this.mediaKey = options.mediaKey ? options.mediaKey : 'media';
   }
 
   checkFileType(file, cb) {
@@ -20,12 +20,12 @@ class MulterUtils {
     if (extname && mimetype) {
       return cb(null, true);
     } else {
-      cb(new Error("Only Image Support!"), false);
+      cb(new Error('Only Image Support!'), false);
     }
   }
 
   fileFilter = (req, file, cb) => {
-    if (file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg") {
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
       cb(null, true);
     } else {
       cb(null, false);

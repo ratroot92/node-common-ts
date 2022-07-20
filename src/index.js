@@ -1,10 +1,14 @@
-const { MalikLogger, malikLogger } = require("./logger");
-const middleware = require("./middleware");
-const fileUtils = require("./fileSystemUtils");
-const error = require("./error");
-const validation = require("./validation");
-const multerUtils = require("./multer");
-const Response = require("./Response");
+const { MalikLogger, malikLogger } = require('./logger');
+const middleware = require('./middleware');
+const fileUtils = require('./fileUtils');
+const error = require('./error');
+const validation = require('./validation');
+const multerUtils = require('./multer');
+const Response = require('./Response');
+const jwtUtils = require('./jwt');
+const models = require('./models');
+const helpers = require('./helpers');
+
 module.exports = {
   MalikLogger,
   malikLogger,
@@ -14,4 +18,7 @@ module.exports = {
   ...validation,
   ...multerUtils,
   ...Response,
+  ...jwtUtils,
+  ...models,
+  ...helpers,
 };

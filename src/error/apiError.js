@@ -1,6 +1,7 @@
 class ApiError {
   constructor(options = {}) {
     this.status = options.status;
+    this.name = options.name;
     this.message = options.message ?? {};
     this.data = options.data ?? {};
     this.accessToken = options.accessToken ?? null;
