@@ -1,19 +1,14 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 const ApiError = require('./apiError');
 const mongooseErrors = require('./mongooseErrors');
-const Response = require('../Response');
+const { debugLogger } = require('../helpers');
 
 function errorHandler(err, req, res, next) {
+  if (process.env.NODE_ENV === 'development') {
+    debugLogger({ logData: '**** - errorHandler - ****' });
+  }
   err.status = err.status || 500;
   err.message = err.message || 'Internal Server Error';
-
-  if (process.env.NODE_ENV === 'development') {
-    console.log('**** - errorHandler - ****');
-    console.log('err.message ==>', err.message);
-    console.log('err.stack ==>', err.stack);
-    console.log('**** - errorHandler - ****');
-  }
 
   if (err.name === 'CastError') {
     err = mongooseErrors.handleCastErrorDB(err);
@@ -33,15 +28,13 @@ function errorHandler(err, req, res, next) {
   }
 
   if (err instanceof ApiError) {
-    res.status(err.status).json({
+    return res.status(err.status).json({
       message: err.message,
-      success: false,
     });
     return;
   } else {
-    res.status(500).json({
-      message: 'something went wrong',
-      success: false,
+    return res.status(500).json({
+      message: err.message,
     });
   }
 }

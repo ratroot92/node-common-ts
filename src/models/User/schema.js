@@ -1,12 +1,7 @@
 module.exports = function (mongoose) {
   return mongoose.Schema(
     {
-      id: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-      },
+      _id: mongoose.Types.ObjectId,
       username: { type: String, required: true, trim: true, unique: true },
       email: { type: String, required: true, trim: true, unique: true },
       password: { type: String, required: true, trim: true },
@@ -15,6 +10,7 @@ module.exports = function (mongoose) {
     },
     {
       timestamps: true,
+      _id: false,
     }
   );
 };

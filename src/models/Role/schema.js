@@ -1,16 +1,12 @@
 module.exports = function (mongoose) {
   return mongoose.Schema(
     {
-      id: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-      },
+      _id: mongoose.Types.ObjectId,
       name: { type: String, required: true, trim: true, unique: true },
     },
     {
       timestamps: true,
+      _id: false,
     }
   );
 };
