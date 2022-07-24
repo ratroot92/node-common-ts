@@ -8,8 +8,10 @@ const nodemailer = require('nodemailer');
 
 const emailUtils = {
   host: process.env.SMTP_HOST || 'mail.pec.org.pk',
-  port: process.env.SMTP_PORT || 25,
-  secure: process.env.SMTP_SECURE || false,
+  port: Number(process.env.SMTP_PORT) || 25,
+  // secure: Boolean(process.env.SMTP_SECURE) || false,
+  secure: true,
+
   auth: {
     user: process.env.SMTP_AUTH_USER || 'no-reply@pec.org.pk',
     pass: process.env.SMTP_AUTH_PASS || 'Noreply@12#$43@!',
@@ -25,17 +27,28 @@ const emailUtils = {
   },
 
   send: async function (options = {}) {
-    const mailTransporter = this.transport();
-    let mailData = {
-      from: this.host,
-      to: this.reciever,
-      subject: options.subject || 'Email Subject',
-      text: options.text || 'Otp',
-      //   attachments: [{ filename: 'epe_rollno_slip.pdf', path: sysPath, contentType: 'application/pdf' }],
-      html: options.html || `<p> This email is originated from www.evergreen.com<p><p>Your Otp is <b>${options.otp} </b> </p>`,
-    };
-    return mailTransporter.sendMail(mailData);
+    try {
+      const mailTransporter = this.transport();
+      let mailData = {
+        from: this.host,
+        to: this.reciever,
+        subject: options.subject || 'Email Subject',
+        text: options.text || 'Otp',
+        //   attachments: [{ filename: 'epe_rollno_slip.pdf', path: sysPath, contentType: 'application/pdf' }],
+        html: options.html || `<p> This email is originated from www.evergreen.com<p><p>Your Otp is <b>${options.otp} </b> </p>`,
+      };
+      console.log(this);
+      console.log(mailData);
+
+      return mailTransporter.sendMail(mailData);
+    } catch (err) {
+      console.log('============================');
+      console.log(err.stack);
+      console.log('============================');
+
+      throw new Error(err.message);
+    }
   },
 };
 
-modulex.exports = emailUtils;
+module.exports = emailUtils;

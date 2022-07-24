@@ -1,4 +1,4 @@
-const applySchemaValidation = require("./schemaValidation");
+const applySchemaValidation = require('./schemaValidation');
 
 module.exports = {
   applySchemaValidation,

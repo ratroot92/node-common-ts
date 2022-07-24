@@ -2,8 +2,6 @@ const debugLogger = require('./debug-logger');
 
 function sendResponse(options = {}) {
   debugLogger({ logData: 'sendResponse' });
-  debugLogger({ logData: options });
-
   options.data = options.data || {};
   options.statusCode = options.statusCode || 500;
   options.message = options.message || '';

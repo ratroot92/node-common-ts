@@ -1,5 +1,5 @@
 /* eslint-disable func-names */
-const bcryptJs = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
 const userSchema = require('./schema');
 
 module.exports = function (mongoose) {
@@ -9,6 +9,9 @@ module.exports = function (mongoose) {
     next();
   }
   const userSchema = require('./schema')(mongoose);
+  userSchema.virtual('id').get(function () {
+    return this._id.toString();
+  });
   userSchema.statics.existById = async function existById(id) {
     const role = await User.findById(id);
     if (role === null) throw new Error(`User with id '${id}' does not exists!`);
@@ -16,15 +19,14 @@ module.exports = function (mongoose) {
   };
   userSchema.pre('find', preFindHook);
   userSchema.pre('findById', preFindHook);
+  userSchema.pre('findOne', preFindHook);
 
   userSchema.pre('save', async function (next) {
     // if (!this.isModified('password')) {
     //   return next();
     // }
-    // const salt = await bcryptJs.genSalt(10);
-    // this.password = await bcryptJs.hash(this.password, 10);
-    // console.log('this.email    ==>', this.email);
-    // console.log('this.password ==>', this.password);
+    // const salt = await bcryptjs.genSalt(10);
+    // this.password = await bcryptjs.hash(this.password, 10);
 
     return next();
   });

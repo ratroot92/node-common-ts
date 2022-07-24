@@ -8,6 +8,9 @@ module.exports = function (mongoose) {
     return id;
   };
 
+  roleSchema.virtual('id').get(function () {
+    return this._id.toString();
+  });
   function preFindHook(next) {
     this.select('-__v -createdAt -updatedAt');
     return next();

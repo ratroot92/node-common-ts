@@ -8,6 +8,8 @@ function adaptRequest(req, res, next) {
     kafka: req.kafka,
     method: req.method,
     body: req.body,
+    user: req.user,
+    authUser: req.authUser,
   });
   return next();
 }

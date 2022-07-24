@@ -46,7 +46,9 @@ module.exports = (validationsDir) => async (req, res, next) => {
     if (typeof validationPath[findValidationKey] === 'object') {
       const schema = validationPath[findValidationKey];
       const data = req.body;
+
       const { value, error, asyncErrors } = await customValidate(schema, data);
+
       if (asyncErrors.length > 0) {
         return res.status(422).send({ errors: asyncErrors, success: false });
       } else if (error !== undefined) {
