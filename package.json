@@ -1,5 +1,5 @@
 {
-  "name": "node-common",
+  "name": "node-common-ts",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ratroot92/node-common.git"
+    "url": "git+https://github.com/ratroot92/node-common-ts.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ratroot92/node-common/issues"
+    "url": "https://github.com/ratroot92/node-common-ts/issues"
   },
-  "homepage": "https://github.com/ratroot92/node-common#readme",
+  "homepage": "https://github.com/ratroot92/node-common-ts#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1",
