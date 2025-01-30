@@ -1,36 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>React with Tailwind</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="flex items-center justify-center h-screen bg-gray-100">
-
+  </head>
+  <body class="h-screen bg-gray-100">
     <div id="root"></div>
 
     <!-- React and ReactDOM -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
-        function App() {
-            return (
-                <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md space-y-4">
-                    <h1 className="text-2xl font-bold text-center text-blue-600">Hello, React!</h1>
-                    <p className="text-gray-700 text-center">This is a simple React component with Tailwind CSS.</p>
-                    <button className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
-                        Click Me
-                    </button>
+      function Navbar() {
+        return (
+          <div className="grid grid-cols-12 gap-1 bg-gray-200  p-2">
+            <div className="col-span-3 text-center ">
+              <p className=" ">Ahmad Kabeer Shaukat</p>
+              <p className="text-xs">Senior Software Engineer</p>
+            </div>
+            <div className="col-span-3 flex justify-around items-center flex-row">
+              <p>
+                <a
+                  className="cursor-pointer text-sm"
+                  href="https://www.linkedin.com/in/ahmed-kabeer-shaukat-b3245b17b/"
+                >
+                  Linkedin
+                </a>
+              </p>
+              <p>
+                <a
+                  className="cursor-pointer text-sm"
+                  href="https://github.com/ratroot92"
+                >
+                  GitHub
+                </a>
+              </p>
+              <p>
+                <a
+                  className="cursor-pointer text-sm"
+                  href="https://hub.docker.com/u/maliksblr92"
+                >
+                  DockerHub
+                </a>
+              </p>
+            </div>
+            <div className="col-span-3 "></div>
+            <div className="col-span-3 flex flex-row justify-around items-center ">
+              <a className="cursor-pointer ">Resume</a>
+              <a className="cursor-pointer ">Research</a>
+              <a className="cursor-pointer ">Connect </a>
+              <a className="cursor-pointer ">Personal </a>
+            </div>
+          </div>
+        );
+      }
+
+      function HomePage() {
+        return (
+          <React.Fragment>
+            <div className="grid grid-cols-2 h-full gap-5 my-5 ">
+              <div className="flex justify-end items-center">
+                <img src="/cv-image.jpeg" className=" rounded-full h-96 w-96" />
+              </div>
+              <div className="  flex flex-col justify-center items-center  p-2">
+                <div className="w-full">
+                  <p className="text-4xl font-bold my-5">
+                    Ahmad Kabeer Shaukat
+                  </p>
+                  <p className="font-bold text-xl my-5">A Bit About Me</p>
                 </div>
-            );
-        }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+                <div className="">
+                  <p className="text-sm my-3 ">
+                    Results-driven Full Stack Developer & DevOps Engineer with
+                    5+ years of experience in designing, developing, and
+                    deploying scalable web applications and cloud
+                    infrastructure. Proficient in Java, Node.js, Python, and
+                    React.js, with expertise in Spring Boot, Django, and
+                    microservices architecture.
+                  </p>
+
+                  <p className="text-sm my-3 ">
+                    {" "}
+                    Skilled in AWS, Kubernetes, Docker, Terraform, and CI/CD
+                    pipelines to optimize performance, security, and automation.
+                    Strong experience in API development, mTLS security, Kafka,
+                    Redis, Elasticsearch, and monitoring with Prometheus &
+                    Grafana. Adept at streamlining deployment workflows and
+                    improving system reliability through infrastructure as code
+                    (IaC) and DevOps best practices.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-12">
+              <div className="col-span-1"></div>
+              <div className="col-span-10 border border-dark">
+                <p className="text-xl my-2">Languages & Databases</p>
+                <div className=" grid grid-cols-9 gap-1  my-2 ">
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Javascript
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Python
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    PHP
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    SQL
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    MongoDB
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    MYSQL
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    PostgreSQL
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    IndexDB
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Redis
+                  </div>
+                </div>
+                <p className="text-xl my-2">Frameworks</p>
+                <div className=" grid grid-cols-9 gap-1  my-2 ">
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    MERN
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    MEAN
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Spring Boot
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Django
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    ELK Stack
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Flask
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Laraval
+                  </div>
+                </div>
+
+                <p className="text-xl my-2">DevOps</p>
+                <div className=" grid grid-cols-9 gap-1  my-2 ">
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Docker
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Kubernetes
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Terraform
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Jenkins
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Helm
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Prometheus
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Grafana
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Selenium
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Ansible
+                  </div>
+                </div>
+
+                <p className="text-xl my-2">CD / CD</p>
+                <div className=" grid grid-cols-4 gap-1  my-2 ">
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Github Actions
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    BitBucket Pipelines
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    GitLab Runners
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Jenkins
+                  </div>
+                </div>
+                <p className="text-xl my-2">AWS</p>
+                <div className=" grid grid-cols-6 gap-1  my-2 ">
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    AWS EKS
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    AWS ECR
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    AWS S3
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    AWS Cloudfront
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    AWS Elastic Beanstalk
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Site to Site VPN
+                  </div>
+                </div>
+
+                <p className="text-xl my-2">Visualizations & Charts</p>
+                <div className=" grid grid-cols-8 gap-1  my-2 ">
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    HighCharts
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Clipboard.js
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Amcharts
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    ChartsJs
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    D3.js
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    D3.js
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Plotly.js
+                  </div>
+                  <div className=" py-2 border border-blue-500 rounded-full flex justify-center items-center text-sm">
+                    Leaflet.js
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-span-1"></div>
+            </div>
+          </React.Fragment>
+        );
+      }
+
+      function App() {
+        return (
+          <React.Fragment>
+            <Navbar />
+            <HomePage />
+          </React.Fragment>
+          // <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md space-y-4">
+          //     <h1 className="text-2xl font-bold text-center text-blue-600">Hello, React!</h1>
+          //     <p className="text-gray-700 text-center">This is a simple React component with Tailwind CSS.</p>
+          //     <button className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+          //         Click Me
+          //     </button>
+          // </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
     </script>
-
-</body>
+  </body>
 </html>
