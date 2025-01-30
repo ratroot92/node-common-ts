@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React with Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+
+    <div id="root"></div>
+
+    <!-- React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+        function App() {
+            return (
+                <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md space-y-4">
+                    <h1 className="text-2xl font-bold text-center text-blue-600">Hello, React!</h1>
+                    <p className="text-gray-700 text-center">This is a simple React component with Tailwind CSS.</p>
+                    <button className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+                        Click Me
+                    </button>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+
+</body>
+</html>
